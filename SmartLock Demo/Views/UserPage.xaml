@@ -6,11 +6,28 @@
              BackgroundColor="Gray">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to the user page!"
-                FontSize="30"
-                TextColor="Black"
-                HorizontalOptions="CenterAndExpand" />
-            <Image Source="smartlock_logo.PNG"/>
+            <ImageButton Source="smartlock_logo.PNG"
+             x:Name="LockButton"
+             Clicked="ButtonClick">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale"
+                            Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale"
+                            Value="0.8" />
+                            </VisualState.Setters>
+                        </VisualState>
+
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </ImageButton>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
