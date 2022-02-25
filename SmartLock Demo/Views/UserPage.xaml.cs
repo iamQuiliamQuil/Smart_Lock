@@ -21,12 +21,16 @@ namespace SmartLock_Demo.Views
     {
             if(isLocked)
             {
-                LockButton.Source = "padlock.png";
+                LockButton.Source = "Unlocked.png";
+                var converter = new ColorTypeConverter();
+                LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Red");
                 isLocked = false;
             }
             else
             {
-                LockButton.Source = "smartlock_logo.png";
+                LockButton.Source = "Locked.png";
+                var converter = new ColorTypeConverter();
+                LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Green");
                 isLocked = true;
             }
     }
