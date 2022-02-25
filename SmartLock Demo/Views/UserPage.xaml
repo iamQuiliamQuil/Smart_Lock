@@ -2,13 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartLock_Demo.Views.Page1"
-             Title="User Page, for users"
-             BackgroundColor="Gray">
+             Title="Smart Lock"
+             BackgroundColor="PowderBlue">
+    
     <ContentPage.Content>
-        <StackLayout>
-            <ImageButton Source="smartlock_logo.PNG"
+
+        <FlexLayout Direction="Column"
+                AlignItems="Center"
+                JustifyContent="SpaceEvenly">
+            <Frame x:Name ="LockButtonFrame" 
+                   CornerRadius="1000"
+                   BackgroundColor="Green">
+            <ImageButton Source="Locked.PNG"
              x:Name="LockButton"
-             Clicked="ButtonClick">
+             Clicked="ButtonClick"
+             HeightRequest="200" 
+             WidthRequest="200"
+             BackgroundColor="Transparent">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CommonStates">
                         <VisualState x:Name="Normal">
@@ -28,6 +38,7 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
             </ImageButton>
-        </StackLayout>
+            </Frame>
+        </FlexLayout>
     </ContentPage.Content>
 </ContentPage>
