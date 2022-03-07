@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Plugin.BLE.Abstractions.Contracts;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+
 
 namespace SmartLock_Demo.Views
 {
@@ -13,6 +15,7 @@ namespace SmartLock_Demo.Views
     public partial class Page1 : ContentPage
     {
         bool isLocked = true;
+        IBluetoothLE ble;
         public Page1()
         {
             InitializeComponent();
