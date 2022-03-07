@@ -17,6 +17,7 @@ namespace SmartLock_Demo
             MainPage = new AppShell();
         }
 
+
         protected override void OnStart()
         {
         }
