@@ -9,7 +9,7 @@ namespace SmartLock_Demo.ViewModels
     {
         public AboutViewModel()
         {
-            Title = "About";
+            Title = "Camera";
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
         }
 

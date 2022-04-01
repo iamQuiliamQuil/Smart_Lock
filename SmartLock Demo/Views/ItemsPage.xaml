@@ -2,10 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartLock_Demo.Views.ItemsPage"
-             Title="{Binding Title}"
+             Title="Locks"
+             BackgroundColor="PowderBlue"
              xmlns:local="clr-namespace:SmartLock_Demo.ViewModels"  
              xmlns:model="clr-namespace:SmartLock_Demo.Models"  
-             x:Name="BrowseItemsPage">
+             x:Name="ItemsPage">
+            <!-- x:Name = "BrowseItemsPage"> -->
+
+    <ContentPage.Content>
+        <ImageButton Source="padlock.png"
+                     x:Name="ExampleButton"
+                     HeightRequest="200"
+                     WidthRequest="200"
+                     BackgroundColor="LimeGreen">
+    </ContentPage.Content>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add Lock" Command="{Binding AddItemCommand}" />
