@@ -6,7 +6,7 @@
              BackgroundColor="PowderBlue"
              xmlns:local="clr-namespace:SmartLock_Demo.ViewModels"  
              xmlns:model="clr-namespace:SmartLock_Demo.Models"  
-             x:Name="ItemsPage">
+             x:Name="itemsPage">
             <!-- x:Name = "BrowseItemsPage"> -->
 
     <ContentPage.Content>
@@ -14,7 +14,7 @@
                      x:Name="ExampleButton"
                      HeightRequest="200"
                      WidthRequest="200"
-                     BackgroundColor="LimeGreen">
+                     BackgroundColor="LimeGreen"/>
     </ContentPage.Content>
 
     <ContentPage.ToolbarItems>
