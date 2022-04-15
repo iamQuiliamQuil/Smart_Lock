@@ -30,9 +30,22 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Home" Icon="home_icon.png" Route="UserPage" ContentTemplate="{DataTemplate local:Page1}" />
-        <ShellContent Title="Camera" Icon="camera.png" Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
-        <ShellContent Title="Locks" Icon="padlock.png" Route ="ItemsPage" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <Tab Title="Home" Icon="home_icon.png">
+            <ShellContent Route="UserPage" ContentTemplate="{DataTemplate local:Page1}" />
+        </Tab>
+
+        <Tab Title="Camera" Icon="camera.png">
+            <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
+        </Tab>
+        
+        <Tab Title="Locks" Icon="padlock.png">
+            <ShellContent Route ="ItemsPage" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        </Tab>
+        
+        <Tab Title="Test" Icon="xamarin_logo.png">
+            <ShellContent Route="TestListView" ContentTemplate="{DataTemplate local:ListViewPage1}"/>
+        </Tab>
+
     </TabBar>
 
     <!--
