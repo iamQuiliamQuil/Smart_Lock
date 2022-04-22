@@ -37,6 +37,16 @@ namespace SmartLock_Demo.Views
 
             await DisplayAlert("Item Tapped", "An item was tapped.", "OK");
 
+            //Should enlarge images from the list when tapped, but there needs to be images in the list to do this
+            /*var image = sender as Image;
+            var viewCell = image.Parent.Parent as ViewCell;
+
+            if(HeightRequest < 250)
+            {
+                image.HeightRequest = image.Height + 100;
+                viewCell.ForceUpdateSize();
+            }*/
+
             //Deselect Item
             ((ListView)sender).SelectedItem = null;
         }
