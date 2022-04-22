@@ -72,15 +72,13 @@ namespace SmartLock_Demo.Views
                 ResponseText.Text = responseString;
             }
         }
-    }
-<<<<<<< HEAD
 
-=======
+
         private async void CameraClick(object sender, EventArgs e)
         {
             await DisplayAlert("Picture taken", "The camera has taken a picture!", "OK");
         }
     }
-   
->>>>>>> 66c4713d06b208595ae5aadb56bcb8bd90895bca
+
 }
+
