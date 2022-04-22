@@ -42,7 +42,7 @@
             <ShellContent Route ="ItemsPage" ContentTemplate="{DataTemplate local:ItemsPage}" />
         </Tab>
         
-        <Tab Title="Test" Icon="xamarin_logo.png">
+        <Tab Title="Gallery" Icon="gallery_icon.png">
             <ShellContent Route="TestListView" ContentTemplate="{DataTemplate local:ListViewPage1}"/>
         </Tab>
 

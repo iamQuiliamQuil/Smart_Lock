@@ -4,21 +4,30 @@
              x:Class="SmartLock_Demo.Views.Page1"
              Title="Smart Lock"
              BackgroundColor="PowderBlue">
+<<<<<<< HEAD
 
     <ContentPage.Content>
+=======
+>>>>>>> 66c4713d06b208595ae5aadb56bcb8bd90895bca
 
+    <ContentPage.Content>
         <FlexLayout Direction="Column"
                 AlignItems="Center"
                 JustifyContent="SpaceEvenly">
-            <Frame x:Name ="LockButtonFrame" 
+                <Frame x:Name ="LockButtonFrame" 
                    CornerRadius="1000"
                    BackgroundColor="Green">
+<<<<<<< HEAD
                 <ImageButton Source="Locked.PNG"
+=======
+                    <ImageButton Source="Locked.PNG"
+>>>>>>> 66c4713d06b208595ae5aadb56bcb8bd90895bca
              x:Name="LockButton"
              Clicked="ButtonClick"
              HeightRequest="200" 
              WidthRequest="200"
              BackgroundColor="Transparent">
+<<<<<<< HEAD
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
@@ -41,5 +50,31 @@
             </Frame>
             <Label x:Name="ResponseText" Text="This is underlined text." />
         </FlexLayout>
+=======
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
+                            Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
+                            Value="0.8" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                </Frame>
+            </FlexLayout>
+>>>>>>> 66c4713d06b208595ae5aadb56bcb8bd90895bca
     </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings"></ToolbarItem>
+    </ContentPage.ToolbarItems>
 </ContentPage>
