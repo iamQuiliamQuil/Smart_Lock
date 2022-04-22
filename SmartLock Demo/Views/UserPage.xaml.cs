@@ -37,6 +37,10 @@ namespace SmartLock_Demo.Views
                 isLocked = true;
             }
     }
+        private async void CameraClick(object sender, EventArgs e)
+        {
+            await DisplayAlert("Picture taken", "The camera has taken a picture!", "OK");
+        }
     }
    
 }
