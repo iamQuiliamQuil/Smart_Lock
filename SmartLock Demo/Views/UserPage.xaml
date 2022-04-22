@@ -4,41 +4,43 @@
              x:Class="SmartLock_Demo.Views.Page1"
              Title="Smart Lock"
              BackgroundColor="PowderBlue">
-    
-    <ContentPage.Content>
 
+    <ContentPage.Content>
         <FlexLayout Direction="Column"
                 AlignItems="Center"
                 JustifyContent="SpaceEvenly">
-            <Frame x:Name ="LockButtonFrame" 
+                <Frame x:Name ="LockButtonFrame" 
                    CornerRadius="1000"
                    BackgroundColor="Green">
-            <ImageButton Source="Locked.PNG"
+                    <ImageButton Source="Locked.PNG"
              x:Name="LockButton"
              Clicked="ButtonClick"
              HeightRequest="200" 
              WidthRequest="200"
              BackgroundColor="Transparent">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="Scale"
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
                             Value="1" />
-                            </VisualState.Setters>
-                        </VisualState>
+                                    </VisualState.Setters>
+                                </VisualState>
 
-                        <VisualState x:Name="Pressed">
-                            <VisualState.Setters>
-                                <Setter Property="Scale"
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
                             Value="0.8" />
-                            </VisualState.Setters>
-                        </VisualState>
+                                    </VisualState.Setters>
+                                </VisualState>
 
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </ImageButton>
-            </Frame>
-        </FlexLayout>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                </Frame>
+            </FlexLayout>
     </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Settings"></ToolbarItem>
+    </ContentPage.ToolbarItems>
 </ContentPage>

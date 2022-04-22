@@ -62,7 +62,7 @@ namespace SmartLock_Demo.Views
          **/
         private void Update(object sender, EventArgs e) {
             for (int i = 0; i < 5; i++) { //Add five more pictures to the list
-                this.PictureList.Add("picture");
+                this.PictureList.Add("Item " + (this.PictureList.Count + 1));
             }
             MyListView.ItemsSource = PictureList;
         }
