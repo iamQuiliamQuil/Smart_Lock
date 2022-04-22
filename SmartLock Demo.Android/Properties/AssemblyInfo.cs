@@ -28,3 +28,5 @@ using Android.App;
 // Add some common permissions, these can be removed if not needed
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+//this allows http clear text to go thrrough, otherwise there will be errors as android doesnt allow by default
+[assembly: Application(UsesCleartextTraffic = true)]
