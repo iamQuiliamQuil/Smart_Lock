@@ -16,7 +16,7 @@ namespace SmartLock_Demo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Page1 : ContentPage
     {
-        private string url = "http://169.226.244.146:8000/";
+        private string url = "https://169.226.236.162:8000/";
         public static Label pLabel;
         //creating http client
         private static HttpClient Client;
@@ -43,14 +43,26 @@ namespace SmartLock_Demo.Views
                 //for http requests instead of https see android assembly info
                 HttpResponseMessage response = new HttpResponseMessage();
                 response = Client.GetAsync(url).Result;
-                responseString = response.Content.ReadAsStringAsync().Result;
+                //getting uuid for security
+                var uuid = response.Content.ReadAsStringAsync().Result;
+                String temp = "uuid~" + uuid + "Qrequest~getCapture_27-04-22-00-47-47.png";
+                
                 var values = new Dictionary<string, string>
                 {
-                    { "", "unlock" }
+                    { "",temp }
                 };
+                /*
+                var values = new Dictionary<string, string>
+                {
+                    { "","getCapture_26-04-22-23-08-24.png" }
+                };
+                */
                 var data = new FormUrlEncodedContent(values);
                 response = Client.PostAsync(url, data).Result;
+                responseString = response.Content.ReadAsStringAsync().Result;
                 ResponseText.Text = responseString;
+                //LockButton.Source = response.Content.ReadAsStringAsync().Result;
+                //ResponseText.Text = responseString;
             }
             else
             {
@@ -60,20 +72,18 @@ namespace SmartLock_Demo.Views
                 isLocked = true;
                 String responseString;
                 //for http requests instead of https see android assembly info
-                HttpResponseMessage response = new HttpResponseMessage();
-                response = Client.GetAsync(url).Result;
-                responseString = response.Content.ReadAsStringAsync().Result;
-                var values = new Dictionary<string, string>
-                {
-                    { "", "lock" }
-                };
-                var data = new FormUrlEncodedContent(values);
-                response = Client.PostAsync(url, data).Result;
-                ResponseText.Text = responseString;
+                //HttpResponseMessage response = new HttpResponseMessage();
+                //response = Client.GetAsync(url).Result;
+                //responseString = response.Content.ReadAsStringAsync().Result;
+                //var values = new Dictionary<string, string>
+                //{
+                    //{ "", "lock" }
+                //};
+               // var data = new FormUrlEncodedContent(values);
+                //response = Client.PostAsync(url, data).Result;
+                //ResponseText.Text = responseString;
             }
-        }
-
-
+    }
         private async void CameraClick(object sender, EventArgs e)
         {
             await DisplayAlert("Picture taken", "The camera has taken a picture!", "OK");
@@ -81,4 +91,3 @@ namespace SmartLock_Demo.Views
     }
 
 }
-
