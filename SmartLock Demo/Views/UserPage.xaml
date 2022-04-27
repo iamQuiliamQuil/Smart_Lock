@@ -4,11 +4,12 @@
              x:Class="SmartLock_Demo.Views.Page1"
              Title="Smart Lock"
              BackgroundColor="PowderBlue">
+
     <ContentPage.Content>
         <FlexLayout Direction="Column"
                 AlignItems="Center"
                 JustifyContent="SpaceEvenly">
-            <Frame x:Name ="LockButtonFrame" 
+                <Frame x:Name ="LockButtonFrame" 
                    CornerRadius="1000"
                    BackgroundColor="Green">
                 <ImageButton Source="Locked.PNG"
