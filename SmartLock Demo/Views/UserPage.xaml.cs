@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 using System.Net.Http;
 using System.Web;
 using System.Net;
+using System.IO;
 
 namespace SmartLock_Demo.Views
 {
@@ -46,23 +47,30 @@ namespace SmartLock_Demo.Views
                 //getting uuid for security
                 var uuid = response.Content.ReadAsStringAsync().Result;
                 String temp = "uuid~" + uuid + "Qrequest~getCapture_27-04-22-00-47-47.png";
-                
+                //capture
                 var values = new Dictionary<string, string>
                 {
-                    { "",temp }
+                    { "","uuid~" + uuid + "Qrequest~capture_100x100_png" }
                 };
-                /*
-                var values = new Dictionary<string, string>
-                {
-                    { "","getCapture_26-04-22-23-08-24.png" }
-                };
-                */
                 var data = new FormUrlEncodedContent(values);
                 response = Client.PostAsync(url, data).Result;
                 responseString = response.Content.ReadAsStringAsync().Result;
-                ResponseText.Text = responseString;
-                //LockButton.Source = response.Content.ReadAsStringAsync().Result;
+                //get capture
+                
+                var values2 = new Dictionary<string, string>
+                {
+                    { "","uuid~" + uuid + "Qrequest~getCapture_" + responseString }
+                };
+                
+                var data2 = new FormUrlEncodedContent(values2);
+                response = Client.PostAsync(url, data2).Result;
+                var stream = response.Content.ReadAsByteArrayAsync().Result;
                 //ResponseText.Text = responseString;
+                LockButton.Source = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(stream);
+                });
+                ResponseText.Text = responseString;
             }
             else
             {
