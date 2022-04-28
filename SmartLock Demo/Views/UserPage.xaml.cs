@@ -18,7 +18,7 @@ namespace SmartLock_Demo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Page1 : ContentPage
     {
-        private string url = "https://169.226.236.162:8000/";
+        private string url = "";
         public static Label pLabel;
         //creating http client
         private static HttpClient Client;
@@ -27,12 +27,24 @@ namespace SmartLock_Demo.Views
         //IBluetoothLE ble;
         public Page1()
         {
+            //creating httpClient with handler to allow ssl
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             Client = new HttpClient(clientHandler);
+            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
 
             InitializeComponent();
         }
+        //used to add ip from phone
+        public void urlBuilder(string ip)
+        {
+            url = "https://" + ip + "/";
+        }
+        public string commandBuilder(string uuid, string command)
+        {
+            return "uuid~" + uuid + "Qrequest~" + command;
+        }
+        //lock/unlock button
         private void ButtonClick(object sender, EventArgs e)
         {
             if (isLocked)
@@ -41,13 +53,19 @@ namespace SmartLock_Demo.Views
                 var converter = new ColorTypeConverter();
                 LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Red");
                 isLocked = false;
-                String responseString;
                 //for http requests instead of https see android assembly info
-                HttpResponseMessage response = new HttpResponseMessage();
-                response = Client.GetAsync(url).Result;
+                var response = Client.GetAsync(url).Result;
                 //getting uuid for security
                 var uuid = response.Content.ReadAsStringAsync().Result;
-                String temp = "uuid~" + uuid + "Qrequest~getCapture_27-04-22-00-47-47.png";
+                var command = commandBuilder(uuid, "unlock");
+                //unlock
+                var values = new Dictionary<string, string>
+                {
+                    { "",command }
+                };
+                var data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+                /*
                 //capture
                 var values = new Dictionary<string, string>
                 {
@@ -72,6 +90,7 @@ namespace SmartLock_Demo.Views
                     return new MemoryStream(stream);
                 });
                 ResponseText.Text = responseString;
+                */
             }
             else
             {
@@ -79,18 +98,17 @@ namespace SmartLock_Demo.Views
                 var converter = new ColorTypeConverter();
                 LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Green");
                 isLocked = true;
-                String responseString;
-                //for http requests instead of https see android assembly info
-                //HttpResponseMessage response = new HttpResponseMessage();
-                //response = Client.GetAsync(url).Result;
-                //responseString = response.Content.ReadAsStringAsync().Result;
-                //var values = new Dictionary<string, string>
-                //{
-                    //{ "", "lock" }
-                //};
-               // var data = new FormUrlEncodedContent(values);
-                //response = Client.PostAsync(url, data).Result;
-                //ResponseText.Text = responseString;
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                var uuid = response.Content.ReadAsStringAsync().Result;
+                var command = commandBuilder(uuid, "lock");
+                //unlock
+                var values = new Dictionary<string, string>
+                {
+                    { "",command }
+                };
+                var data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
             }
     }
         private async void SetIP(object sender, EventArgs e)
@@ -112,6 +130,7 @@ namespace SmartLock_Demo.Views
                     valid = true;
                     await DisplayAlert("Successfully set IP", "The lock's IP Address has been successfully configured! (" + ipAddress + ")", "OK!");
                     Preferences.Set("ipAddr", ipAddress);
+                    urlBuilder(ipAddress);
                 }
                 else
                 {
@@ -119,6 +138,7 @@ namespace SmartLock_Demo.Views
                 }
             } while (!valid);
         }
+
     }
 
 }
