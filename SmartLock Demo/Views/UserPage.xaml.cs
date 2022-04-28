@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web;
 using System.Net;
 using System.IO;
+using Xamarin.Essentials;
 
 namespace SmartLock_Demo.Views
 {
@@ -92,9 +93,27 @@ namespace SmartLock_Demo.Views
                 //ResponseText.Text = responseString;
             }
     }
-        private async void CameraClick(object sender, EventArgs e)
+        private async void SetIP(object sender, EventArgs e)
         {
-            await DisplayAlert("Picture taken", "The camera has taken a picture!", "OK");
+            bool valid = false; //Used to determine whether the prompt should be repeated, in event of invalid response
+            do
+            {
+                string ipAddress = await DisplayPromptAsync("IP Address", "Please enter the IP Address");
+                char ch = '.';
+
+                int dots = ipAddress.Count(f => (f == ch)); //Counts how many periods in response
+
+                if (dots == 3) //Checks if the IP Address is in the correct format
+                {
+                    valid = true;
+                    await DisplayAlert("Successfully set IP", "The lock's IP Address has been successfully configured! (" + ipAddress + ")", "OK!");
+                    Preferences.Set("ipAddr", ipAddress);
+                }
+                else
+                {
+                    await DisplayAlert("Incorrect format", "IP Address consist of four numbers separated by periods", "Retry");
+                }
+            } while (!valid);
         }
 
     }

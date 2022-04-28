@@ -42,6 +42,6 @@
         </FlexLayout>
     </ContentPage.Content>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Settings"></ToolbarItem>
+        <ToolbarItem Text="Settings" Clicked="SetIP"></ToolbarItem>
     </ContentPage.ToolbarItems>
 </ContentPage>
