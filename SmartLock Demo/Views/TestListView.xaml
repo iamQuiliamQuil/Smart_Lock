@@ -13,7 +13,11 @@
         <!--Built in Cells-->
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ImageCell ImageSource="{Binding CameraCapture}" Text="Date - Time" Detail="Photo Details" DetailColor="Black"/>
+                <ImageCell x:Name="MyImageCell"
+                           ImageSource=""
+                           Text="{Binding Filenames}"
+                           ImageSource="{Binding CameraCapture}" 
+                           DetailColor="Black"/>
             </DataTemplate>
         </ListView.ItemTemplate>
 
