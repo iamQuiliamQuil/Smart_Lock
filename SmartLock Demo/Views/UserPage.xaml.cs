@@ -42,11 +42,11 @@ namespace SmartLock_Demo.Views
                 isLocked = false;
                 String responseString;
                 //for http requests instead of https see android assembly info
-                HttpResponseMessage response = new HttpResponseMessage();
+                HttpResponseMessage response = new HttpResponseMessage();//edit
                 response = Client.GetAsync(url).Result;
                 //getting uuid for security
                 var uuid = response.Content.ReadAsStringAsync().Result;
-                String temp = "uuid~" + uuid + "Qrequest~getCapture_27-04-22-00-47-47.png";
+                String temp = "uuid~" + uuid + "Qrequest~getCapture_27-04-22-00-47-47.png";//function claas
                 //capture
                 var values = new Dictionary<string, string>
                 {
@@ -96,6 +96,7 @@ namespace SmartLock_Demo.Views
         {
             await DisplayAlert("Picture taken", "The camera has taken a picture!", "OK");
         }
+
     }
 
 }
