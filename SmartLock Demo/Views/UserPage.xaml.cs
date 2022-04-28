@@ -31,6 +31,7 @@ namespace SmartLock_Demo.Views
             HttpClientHandler clientHandler = new HttpClientHandler();
             clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
             Client = new HttpClient(clientHandler);
+            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
 
             InitializeComponent();
         }
