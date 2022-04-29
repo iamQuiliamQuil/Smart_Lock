@@ -47,6 +47,10 @@ namespace SmartLock_Demo.Views
         //lock/unlock button
         private void ButtonClick(object sender, EventArgs e)
         {
+            /*
+            var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            player.Load("alertTone.mp3");
+            player.Play();*/
             if (isLocked)
             {
                 LockButton.Source = "Unlocked.png";

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -66,12 +67,14 @@ namespace SmartLock_Demo.Views
          * Need to determine how many pictures to show, and how to show more pictures if
          * the user wants to see more, as it seems like this is executed once at initialization
          **/
-        private void Update(object sender, EventArgs e) {
+        
+        /* Removed as all filenames are loaded on initialization
+         * private void Update(object sender, EventArgs e) {
             for (int i = 0; i < 5; i++) { //Add five more pictures to the list
                 this.PictureList.Add("Item " + (this.PictureList.Count + 1));
             }
             MyListView.ItemsSource = PictureList;
-        }
+        }*/
 
         //Should send a request to the Pi for details about the picture when a picture is selected
         private async void GetDetails(object sender, EventArgs e)
@@ -82,7 +85,10 @@ namespace SmartLock_Demo.Views
 
         private async void SetDate(object sender, EventArgs e)
         {
-            string[] unformatted = ((ListView)sender).SelectedItem.ToString().Split('-');
+            string filename = ((ListView)sender).SelectedItem.ToString();
+            string extension = System.IO.Path.GetExtension(filename);
+            filename = filename.Substring(0, filename.Length - extension.Length);
+            string[] unformatted = filename.Split('-');
             string formatted = unformatted[0] + "/" + unformatted[1] + "/" + unformatted[2] + " "
                 + unformatted[3] + ":" + unformatted[4] + ":" + unformatted[5];
             ((ListView)sender).SelectedItem = formatted;
@@ -113,6 +119,32 @@ namespace SmartLock_Demo.Views
                 PictureList.Add((string)StringArray[i]);
             }
             return PictureList;
+        }
+
+        private async void DisplayImage(object sender, EventArgs e)
+        {
+            await DisplayAlert("Pause", sender.ToString() + "\n" + e.ToString(), "OK");
+            var ThisList = ((ListView)sender);
+            //ThisList.SelectedItem = new ImageCell();
+            
+            /*ImageCell myImageCell = ((ImageCell) ((ListView)sender).SelectedItem);
+            string filename = ((ListView)sender).SelectedItem.ToString();
+            var response = Client.GetAsync(url).Result;
+            //getting uuid for security
+            var uuid = response.Content.ReadAsStringAsync().Result;
+            var values = new Dictionary<string, string>
+                {
+                    {"","uuid~" + uuid + "Qrequest~getCapture_" + filename}
+                };
+
+            var data = new FormUrlEncodedContent(values);
+            response = Client.PostAsync(url, data).Result;
+            var stream = response.Content.ReadAsByteArrayAsync().Result;
+
+            MyImageCell.ImageSource = ImageSource.FromStream(() =>
+            {
+                return new MemoryStream(stream);
+            });*/
         }
     }
 }

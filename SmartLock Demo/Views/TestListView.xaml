@@ -2,27 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SmartLock_Demo.Views.ListViewPage1"
-             Title="Locks">
+             Title="Gallery">
     <StackLayout>
-    <ListView x:Name="MyListView"
+        <ListView x:Name="MyListView"
             ItemsSource="{Binding Items}"
             ItemTapped="GetDetails"
             CachingStrategy="RecycleElement"
             Header="Look at pictures taken by the camera on your SmartLock"
-            SeparatorColor="Black">
-        <!--Built in Cells-->
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ImageCell x:Name="MyImageCell"
-                           ImageSource=""
+            SeparatorColor="Black"
+            IsPullToRefreshEnabled="True">
+            <!--Built in Cells-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ImageCell 
+                           x:Name="MyImageCell"
                            Text="{Binding Filenames}"
-                           ImageSource="{Binding CameraCapture}" 
+                           ImageSource="" 
                            DetailColor="Black"/>
-            </DataTemplate>
-        </ListView.ItemTemplate>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-        <!--Custom View Cells-->
-        <!--
+            <!--Custom View Cells-->
+            <!--
     <ListView.ItemTemplate>
       <DataTemplate>
         <ViewCell>
@@ -36,13 +37,6 @@
       </DataTemplate>
     </ListView.ItemTemplate>
     -->
-    </ListView>
-        <Button
-            Text="Load 5 more images"
-            HorizontalOptions="Center"
-            VerticalOptions="Start"
-            Margin="15"
-            TextTransform="None"
-            Clicked="Update"/>
+        </ListView>
     </StackLayout>
 </ContentPage>
