@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SmartLock_Demo.Views.SettingsPage"
+             Title="Settings">
+    <ContentPage.Content>
+        <StackLayout>
+            <TableView Intent="Settings" x:Name="Table">
+                <TableRoot>
+                    <TableSection Title="SMS Settings" x:Name="TableSection">
+                        <SwitchCell Text="Get SMS notifications?" On="False" x:Name="TextBool" OnChanged="TextSwitch"/>
+                        <EntryCell Label="Phone Number:" Placeholder="SMS disabled" x:Name="PhoneRegister" Completed="UpdatePhone"/>
+                    </TableSection>
+                    <TableSection Title="IP Settings" x:Name="TableSection2">
+                        <EntryCell Label="IP Address:" Placeholder="X.X.X.X:XXXX" x:Name="IPADDR" Completed="SetIP"/>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
