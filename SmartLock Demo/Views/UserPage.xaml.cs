@@ -94,7 +94,11 @@ namespace SmartLock_Demo.Views
             bool valid = false; //Used to determine whether the prompt should be repeated, in event of invalid response
             do
             {
-                string ipAddress = await DisplayPromptAsync("IP Address", "IP Address is currently " + Preferences.Get("ipAddr", "1.1.1.1") + " Please enter the IP Address");
+                string ipAddress = await DisplayPromptAsync("IP Address", "IP Address is currently " + Preferences.Get("ipAddr", "1.1.1.1") + "\nPlease enter the IP Address");
+                if (ipAddress == null)
+                {
+                    break;
+                }
                 char ch = '.';
 
                 int dots = ipAddress.Count(f => (f == ch)); //Counts how many periods in response
