@@ -38,8 +38,8 @@
             <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
         </Tab>
         
-        <Tab Title="Locks" Icon="padlock.png">
-            <ShellContent Route ="ItemsPage" ContentTemplate="{DataTemplate local:ItemsPage}" />
+        <Tab Title="Settings" Icon="settings_logo.png">
+            <ShellContent Route ="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
         </Tab>
         
         <Tab Title="Gallery" Icon="gallery_icon.png">
@@ -52,7 +52,6 @@
         If you would like to navigate to this content you can do so by calling
         await Shell.Current.GoToAsync("//LoginPage");
     -->
-
 
 
 </Shell>
