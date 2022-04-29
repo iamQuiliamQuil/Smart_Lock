@@ -47,6 +47,7 @@ namespace SmartLock_Demo.Views
         //lock/unlock button
         private void ButtonClick(object sender, EventArgs e)
         {
+
             if (isLocked)
             {
                 LockButton.Source = "Unlocked.png";
@@ -59,48 +60,25 @@ namespace SmartLock_Demo.Views
                 var uuid = response.Content.ReadAsStringAsync().Result;
                 var command = commandBuilder(uuid, "unlock");
                 //unlock
+                
                 var values = new Dictionary<string, string>
                 {
                     { "",command }
                 };
                 var data = new FormUrlEncodedContent(values);
                 response = Client.PostAsync(url, data).Result;
-                /*
-                //capture
-                var values = new Dictionary<string, string>
-                {
-                    { "","uuid~" + uuid + "Qrequest~capture_100x100_png" }
-                };
-                var data = new FormUrlEncodedContent(values);
-                response = Client.PostAsync(url, data).Result;
-                responseString = response.Content.ReadAsStringAsync().Result;
-                //get capture
-                
-                var values2 = new Dictionary<string, string>
-                {
-                    { "","uuid~" + uuid + "Qrequest~getCapture_" + responseString }
-                };
-                
-                var data2 = new FormUrlEncodedContent(values2);
-                response = Client.PostAsync(url, data2).Result;
-                var stream = response.Content.ReadAsByteArrayAsync().Result;
-                //ResponseText.Text = responseString;
-                LockButton.Source = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(stream);
-                });
-                ResponseText.Text = responseString;
-                */
             }
             else
             {
+                //switch images
                 LockButton.Source = "Locked.png";
                 var converter = new ColorTypeConverter();
                 LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Green");
                 isLocked = true;
+                //get uuid it is unique each time pi is restarted
                 var response = Client.GetAsync(url).Result;
-                //getting uuid for security
                 var uuid = response.Content.ReadAsStringAsync().Result;
+                //create command
                 var command = commandBuilder(uuid, "lock");
                 //unlock
                 var values = new Dictionary<string, string>
