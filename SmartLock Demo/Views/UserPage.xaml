@@ -9,7 +9,7 @@
         <FlexLayout Direction="Column"
                 AlignItems="Center"
                 JustifyContent="SpaceEvenly">
-                <Frame x:Name ="LockButtonFrame" 
+            <Frame x:Name ="LockButtonFrame" 
                    CornerRadius="1000"
                    BackgroundColor="Green">
                 <ImageButton Source="Locked.PNG"
@@ -38,7 +38,11 @@
                     </VisualStateManager.VisualStateGroups>
                 </ImageButton>
             </Frame>
-            <Label x:Name="ResponseText" Text="This is underlined text." />
+            <Button Text="Click to get lockStatus"
+                x:Name="statusButton"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
+                Clicked="StatusButtonClick"/>
         </FlexLayout>
     </ContentPage.Content>
     <ContentPage.ToolbarItems>

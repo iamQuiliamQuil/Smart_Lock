@@ -19,7 +19,7 @@ namespace SmartLock_Demo.Views
     public partial class Page1 : ContentPage
     {
         private string url = "";
-        public static Label pLabel;
+        private string uuid = "";
         //creating http client
         private static HttpClient Client;
         //this par is nessasary to allow for self assigned https certificates
@@ -27,13 +27,16 @@ namespace SmartLock_Demo.Views
         //IBluetoothLE ble;
         public Page1()
         {
-            //creating httpClient with handler to allow ssl
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            Client = new HttpClient(clientHandler);
-            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
-
             InitializeComponent();
+                //creating httpClient with handler to allow ssl
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+                Client = new HttpClient(clientHandler);
+                urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                uuid = response.Content.ReadAsStringAsync().Result;
+
         }
         //used to add ip from phone
         public void urlBuilder(string ip)
@@ -51,70 +54,74 @@ namespace SmartLock_Demo.Views
             var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
             player.Load("alertTone.mp3");
             player.Play();*/
-            if (isLocked)
-            {
-                LockButton.Source = "Unlocked.png";
-                var converter = new ColorTypeConverter();
-                LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Red");
-                isLocked = false;
-                //for http requests instead of https see android assembly info
-                var response = Client.GetAsync(url).Result;
-                //getting uuid for security
-                var uuid = response.Content.ReadAsStringAsync().Result;
-                var command = commandBuilder(uuid, "unlock");
-                //unlock
-                var values = new Dictionary<string, string>
+            try { 
+                if (isLocked)
                 {
-                    { "",command }
-                };
-                var data = new FormUrlEncodedContent(values);
-                response = Client.PostAsync(url, data).Result;
-                /*
-                //capture
-                var values = new Dictionary<string, string>
+                    LockButton.Source = "Unlocked.png";
+                    var converter = new ColorTypeConverter();
+                    LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Red");
+                    isLocked = false;
+                    //for http requests instead of https see android assembly info
+                    var command = commandBuilder(uuid, "unlock");
+                    //unlock
+                    var values = new Dictionary<string, string>
+                    {
+                        { "",command }
+                    };
+                    var data = new FormUrlEncodedContent(values);
+                    var response = Client.PostAsync(url, data).Result;
+                }
+                else
                 {
-                    { "","uuid~" + uuid + "Qrequest~capture_100x100_png" }
-                };
-                var data = new FormUrlEncodedContent(values);
-                response = Client.PostAsync(url, data).Result;
-                responseString = response.Content.ReadAsStringAsync().Result;
-                //get capture
-                
-                var values2 = new Dictionary<string, string>
-                {
-                    { "","uuid~" + uuid + "Qrequest~getCapture_" + responseString }
-                };
-                
-                var data2 = new FormUrlEncodedContent(values2);
-                response = Client.PostAsync(url, data2).Result;
-                var stream = response.Content.ReadAsByteArrayAsync().Result;
-                //ResponseText.Text = responseString;
-                LockButton.Source = ImageSource.FromStream(() =>
-                {
-                    return new MemoryStream(stream);
-                });
-                ResponseText.Text = responseString;
-                */
+                    LockButton.Source = "Locked.png";
+                    var converter = new ColorTypeConverter();
+                    LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Green");
+                    isLocked = true;
+                    var command = commandBuilder(uuid, "lock");
+                    //unlock
+                    var values = new Dictionary<string, string>
+                    {
+                        { "",command }
+                    };
+                    var data = new FormUrlEncodedContent(values);
+                    var response = Client.PostAsync(url, data).Result;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                LockButton.Source = "Locked.png";
-                var converter = new ColorTypeConverter();
-                LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Green");
-                isLocked = true;
-                var response = Client.GetAsync(url).Result;
-                //getting uuid for security
-                var uuid = response.Content.ReadAsStringAsync().Result;
-                var command = commandBuilder(uuid, "lock");
-                //unlock
-                var values = new Dictionary<string, string>
-                {
-                    { "",command }
-                };
-                var data = new FormUrlEncodedContent(values);
-                response = Client.PostAsync(url, data).Result;
+                DisplayAlert("Error", "Couldn't connect to lock", "OK");
             }
     }
+        private void StatusButtonClick(object sender, EventArgs e)
+        {
+            try
+            {
+                //checking state of the lock
+                var command = commandBuilder(uuid, "getState");
+                //unlock
+                var values = new Dictionary<string, string>
+                    {
+                        { "",command }
+                    };
+                var data = new FormUrlEncodedContent(values);
+                var response = Client.PostAsync(url, data).Result;
+
+                var currentState = response.Content.ReadAsStringAsync().Result;
+                
+                if (currentState.Equals("false", StringComparison.OrdinalIgnoreCase))
+                {
+                    statusButton.Text = currentState;
+                    LockButton.Source = "Unlocked.png";
+                    var converter = new ColorTypeConverter();
+                    LockButtonFrame.BackgroundColor = (Color)converter.ConvertFromInvariantString("Color.Red");
+                    isLocked = false;
+                }
+            }
+            catch(Exception ex)
+            {
+                DisplayAlert("Error", "Couldn't connect to lock", "OK");
+            }
+        }
         private async void SetIP(object sender, EventArgs e)
         {
             bool valid = false; //Used to determine whether the prompt should be repeated, in event of invalid response

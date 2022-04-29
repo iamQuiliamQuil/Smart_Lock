@@ -39,62 +39,91 @@ namespace SmartLock_Demo.Views
         }
         public void ButtonClick(object sender, EventArgs e)
         {
-            var response = Client.GetAsync(url).Result;
-            //getting uuid for security
-            var uuid = response.Content.ReadAsStringAsync().Result;
-            var command = commandBuilder(uuid, "getPictureNames");
-            var values = new Dictionary<string, string>
+            try
+            {
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                var uuid = response.Content.ReadAsStringAsync().Result;
+                var command = commandBuilder(uuid, "getPictureNames");
+                var values = new Dictionary<string, string>
                 {
                     { "",command }
                 };
-            var data = new FormUrlEncodedContent(values);
-            response = Client.PostAsync(url, data).Result;
-            var fileNames = response.Content.ReadAsStringAsync().Result;
+                var data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+                var fileNames = response.Content.ReadAsStringAsync().Result;
 
-            var stringArr = fileNames.Split('~');
-            //image1
-            command = commandBuilder(uuid, "getCapture_" + stringArr[0]);
-            values = new Dictionary<string, string>
+                var stringArr = fileNames.Split('~');
+                //image1
+                command = commandBuilder(uuid, "getCapture_" + stringArr[0]);
+                values = new Dictionary<string, string>
                 {
                     { "",command }
                 };
-            data = new FormUrlEncodedContent(values);
-            response = Client.PostAsync(url, data).Result;
-            var stream = response.Content.ReadAsByteArrayAsync().Result;
-            //ResponseText.Text = responseString;
-            image1.Source = ImageSource.FromStream(() =>
-            {
-                return new MemoryStream(stream);
-            });
-            //image2
-            command = commandBuilder(uuid, "getCapture_" + stringArr[1]);
-            values = new Dictionary<string, string>
+                data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+                var stream = response.Content.ReadAsByteArrayAsync().Result;
+                //ResponseText.Text = responseString;
+                image1.Source = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(stream);
+                });
+                //image2
+                command = commandBuilder(uuid, "getCapture_" + stringArr[1]);
+                values = new Dictionary<string, string>
                 {
                     { "",command }
                 };
-            data = new FormUrlEncodedContent(values);
-            response = Client.PostAsync(url, data).Result;
-            stream = response.Content.ReadAsByteArrayAsync().Result;
-            //ResponseText.Text = responseString;
-            image2.Source = ImageSource.FromStream(() =>
-            {
-                return new MemoryStream(stream);
-            });
-            //image3
-            command = commandBuilder(uuid, "getCapture_" + stringArr[2]);
-            values = new Dictionary<string, string>
+                data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+                stream = response.Content.ReadAsByteArrayAsync().Result;
+                //ResponseText.Text = responseString;
+                image2.Source = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(stream);
+                });
+                //image3
+                command = commandBuilder(uuid, "getCapture_" + stringArr[2]);
+                values = new Dictionary<string, string>
                 {
                     { "",command }
                 };
-            data = new FormUrlEncodedContent(values);
-            response = Client.PostAsync(url, data).Result;
-            stream = response.Content.ReadAsByteArrayAsync().Result;
-            //ResponseText.Text = responseString;
-            image3.Source = ImageSource.FromStream(() =>
+                data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+                stream = response.Content.ReadAsByteArrayAsync().Result;
+                //ResponseText.Text = responseString;
+                image3.Source = ImageSource.FromStream(() =>
+                {
+                    return new MemoryStream(stream);
+                });
+            }
+            catch(Exception ex)
             {
-                return new MemoryStream(stream);
-            });
+                DisplayAlert("Error", "Couldn't connect to lock", "OK");
+            }
 
+        }
+
+        private async void CaptureButtonClick(object sender, EventArgs e)
+        {
+            try
+            {
+                //capture
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                var uuid = response.Content.ReadAsStringAsync().Result;
+                var values = new Dictionary<string, string>
+            {
+                { "","uuid~" + uuid + "Qrequest~capture_100x100_png" }
+            };
+                var data = new FormUrlEncodedContent(values);
+                response = Client.PostAsync(url, data).Result;
+            }
+            catch(Exception ex)
+            {
+                await DisplayAlert("Error", "Couldn't connect to lock", "OK");
+            }
+            
         }
     }
 
