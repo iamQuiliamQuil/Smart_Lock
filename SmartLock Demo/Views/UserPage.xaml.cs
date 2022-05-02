@@ -29,13 +29,21 @@ namespace SmartLock_Demo.Views
         {
             InitializeComponent();
                 //creating httpClient with handler to allow ssl
-                HttpClientHandler clientHandler = new HttpClientHandler();
-                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-                Client = new HttpClient(clientHandler);
-                urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            Client = new HttpClient(clientHandler);
+            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
+            try
+            {
                 var response = Client.GetAsync(url).Result;
                 //getting uuid for security
                 uuid = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", "Couldn't connect to lock", "OK");
+            }
+
 
         }
         //used to add ip from phone

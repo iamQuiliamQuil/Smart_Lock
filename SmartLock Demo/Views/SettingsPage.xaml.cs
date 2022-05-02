@@ -19,7 +19,7 @@ namespace SmartLock_Demo.Views
             PhoneRegister.IsEnabled = false;
             registerCell = PhoneRegister;
         }
-
+        //hello wor
         private async void TextSwitch(object sender, EventArgs e)
         {
             bool wantsText = TextBool.On;
