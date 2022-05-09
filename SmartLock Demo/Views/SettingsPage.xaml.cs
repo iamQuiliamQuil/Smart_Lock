@@ -18,8 +18,16 @@ namespace SmartLock_Demo.Views
             InitializeComponent();
             PhoneRegister.IsEnabled = false;
             registerCell = PhoneRegister;
+            switch (Preferences.Get("wantsText", false))
+            {
+                case true:
+                    TextBool.On = true;
+                    break;
+                default:
+                    TextBool.On = false;
+                    break;
+            }
         }
-        //hello wor
         private async void TextSwitch(object sender, EventArgs e)
         {
             bool wantsText = TextBool.On;
@@ -29,7 +37,11 @@ namespace SmartLock_Demo.Views
                     Preferences.Set("wantsText", true);
                     PhoneRegister.IsEnabled = true;
                     PhoneRegister.Placeholder = "Your Phone Number Here";
-                    await DisplayAlert("SMS enabled", "SMS notifications have been enabled. Please update your phone number", "OK");
+                    if(Preferences.Get("phoneNumber", "").Equals(""))
+                    {
+                        await DisplayAlert("SMS enabled", "SMS notifications have been enabled. Please update your phone number", "OK");
+
+                    }
                     //TableSection.Add(registerCell);
                     break;
                 default:
