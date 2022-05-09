@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -17,53 +16,37 @@ namespace SmartLock_Demo.Views
         public SettingsPage()
         {
             InitializeComponent();
-            PhoneRegister.IsEnabled = false;
-            registerCell = PhoneRegister;
-            //creating httpClient with handler to allow ssl
-            HttpClientHandler clientHandler = new HttpClientHandler();
-            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
-            Client = new HttpClient(clientHandler);
-            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
-            try
+            switch (Preferences.Get("wantsText", false)) //Used to keep the Switchcell state between sessions
             {
-                var response = Client.GetAsync(url).Result;
-                //getting uuid for security
-                uuid = response.Content.ReadAsStringAsync().Result;
-            }
-            catch (Exception ex)
-            {
-                DisplayAlert("Error", "Couldn't connect to lock", "OK");
+                case true:
+                    TextBool.On = true;
+                    break;
+                default:
+                    TextBool.On = false;
+                    break;
             }
         }
-        public void urlBuilder(string ip)
-        {
-            url = "https://" + ip + "/";
-        }
-        public string commandBuilder(string uuid, string command)
-        {
-            return "uuid~" + uuid + "Qrequest~" + command;
-        }
-        //hello wor
-        private string url = "";
-        private string uuid = "";
-        //creating http client
-        private static HttpClient Client;
+        
+        //TextSwitch toggles the wantsText boolean kept in Preferences, called when the Switchcell TextBool is toggled
         private async void TextSwitch(object sender, EventArgs e)
         {
-            bool wantsText = TextBool.On;
-            switch (wantsText)
+            bool wantsText = TextBool.On; //Checks if the switch is on or off, sets wantsText to the result
+            switch (wantsText) //Switch statement based on whether the switch is on or off
             {
                 case true:
                     Preferences.Set("wantsText", true);
-                    PhoneRegister.IsEnabled = true;
+                    PhoneRegister.IsEnabled = true; //Allows the Entrycell to receive input
                     PhoneRegister.Placeholder = "Your Phone Number Here";
-                    await DisplayAlert("SMS enabled", "SMS notifications have been enabled. Please update your phone number", "OK");
-                    //TableSection.Add(registerCell);
+                    if(Preferences.Get("phoneNumber", "").Equals("")) //Checks if the phone number hasn't been set to anything, if so it reminds the user to set their phone number
+                    {
+                        await DisplayAlert("SMS enabled", "SMS notifications have been enabled. Please update your phone number", "OK");
+
+                    }
                     break;
                 default:
                     Preferences.Set("wantsText", false);
-                    Preferences.Remove("phoneNumber");
-                    PhoneRegister.IsEnabled = false;
+                    Preferences.Remove("phoneNumber"); //Clears phone number from the app preferences, we need to be ethical
+                    PhoneRegister.IsEnabled = false; //Makes it so the Entrycell can't receive input
                     PhoneRegister.Placeholder = "SMS disabled";
                     PhoneRegister.Text = "";
                     await DisplayAlert("SMS disabled", "Understood, SMS notifications disabled and phone number has been cleared from application preferences", "OK");
@@ -72,60 +55,42 @@ namespace SmartLock_Demo.Views
             }
             //await DisplayAlert("Switch changed", "State currently " + wantsText, "OK"); Debugging
         }
+
+        //UpdatePhone is used to verify the format of the phone number input, if valid it updates the phoneNumber preference
         private async void UpdatePhone(object sender, EventArgs e)
         {
             string phoneNumber = PhoneRegister.Text;
-            bool valid = true;
+            bool valid = true; //Assume it's true. If one of the conditions is fulfilled, then it isn't a true phone number
             //Verify that this is a phone number (all numbers)
             for(int i = 0; i < phoneNumber.Length; i++)
             {
-                if (phoneNumber[i] < 48 || phoneNumber[i] > 57)
+                if (phoneNumber[i] < 48 || phoneNumber[i] > 57) //Checks ASCII values, only digits
                 {
                     valid = false;
                 }
             }
-
-            if (!valid)
+            
+            if(!valid)
             {
                 await DisplayAlert("Incorrect Format", "Incorrect phone number format, please input with no" +
                     "hypens, dashes, or spaces. Include dialing code as well", "OK");
-            }
-            else
+            } else
             {
                 Preferences.Set("phoneNumer", phoneNumber);
                 await DisplayAlert("Phone Number Set!", "Phone number successfully set to: " + phoneNumber, "OK");
-                try
-                {
-                    var response = Client.GetAsync(url).Result;
-                    //getting uuid for security
-                    var uuid = response.Content.ReadAsStringAsync().Result;
-                    //for http requests instead of https see android assembly info
-                    var command = commandBuilder(uuid, "addPhone_" + phoneNumber);
-                    //unlock
-                    var values = new Dictionary<string, string>
-                    {
-                        { "",command }
-                    };
-                    var data = new FormUrlEncodedContent(values);
-                    response = Client.PostAsync(url, data).Result;
-                    ////////////
-                    var fileNames = response.Content.ReadAsStringAsync().Result;
-                    await DisplayAlert("Success", fileNames, "OK");
-                }
-                catch (Exception ex)
-                {
-
-                }
             }
         }
+
+        //SetIP is used to set the IP address in the application preferences, called when the IPADDR Entrycell receives input
         private async void SetIP(object sender, EventArgs e)
         {
             string ipAddress = IPADDR.Text;
-            if(ipAddress == null)
+            if(ipAddress == null) //If you were to open the keyboard and not type anything, the app would crash if not for this
             {
                 return;
             }
 
+            //Dot and colon used to separate IP Address and Port
             char ch = '.';
             char col = ':';
             int dots = ipAddress.Count(f => (f == ch)); //Counts how many periods in input

@@ -133,13 +133,15 @@ namespace SmartLock_Demo.Views
                 DisplayAlert("Error", "Couldn't connect to lock", "OK");
             }
         }
+
+        //Initially used for debugging and testing purposes, used to set the IP Address from the home screen (before we had the Settings page)
         private async void SetIP(object sender, EventArgs e)
         {
             bool valid = false; //Used to determine whether the prompt should be repeated, in event of invalid response
             do
             {
                 string ipAddress = await DisplayPromptAsync("IP Address", "IP Address is currently " + Preferences.Get("ipAddr", "1.1.1.1") + "\nPlease enter the IP Address");
-                if (ipAddress == null)
+                if (ipAddress == null) //If the keyboard were to be brought up without typing anything and returning the empty input, the app would crash
                 {
                     break;
                 }
@@ -158,7 +160,7 @@ namespace SmartLock_Demo.Views
                 {
                     await DisplayAlert("Incorrect format", "IP Address consist of four numbers separated by periods", "Retry");
                 }
-            } while (!valid);
+            } while (!valid); //Loops while the input isn't considered valid
         }
 
     }
