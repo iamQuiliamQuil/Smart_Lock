@@ -8,11 +8,11 @@
             <TableView Intent="Settings" x:Name="Table">
                 <TableRoot>
                     <TableSection Title="SMS Settings" x:Name="TableSection">
-                        <SwitchCell Text="Get SMS notifications?" On="False" x:Name="TextBool" OnChanged="TextSwitch"/>
-                        <EntryCell Label="Phone Number:" Placeholder="SMS disabled" x:Name="PhoneRegister" Completed="UpdatePhone"/>
+                        <SwitchCell Text="Get SMS notifications?" OnColor="Black" On="False" x:Name="TextBool" OnChanged="TextSwitch" />
+                        <EntryCell Label="Phone Number:" LabelColor="Black"  Placeholder="SMS disabled" x:Name="PhoneRegister" Completed="UpdatePhone"/>
                     </TableSection>
                     <TableSection Title="IP Settings" x:Name="TableSection2">
-                        <EntryCell Label="IP Address:" Placeholder="X.X.X.X:XXXX" x:Name="IPADDR" Completed="SetIP"/>
+                        <EntryCell Label="IP Address:" LabelColor="Black" Placeholder="X.X.X.X:XXXX" x:Name="IPADDR" Completed="SetIP"/>
                     </TableSection>
                 </TableRoot>
             </TableView>

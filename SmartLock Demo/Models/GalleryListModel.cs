@@ -7,5 +7,6 @@ namespace SmartLock_Demo.Models
     public class GalleryListModel
     {
         public string FileName { get; set; }
+        public string DisplayName { get; set; }
     }
 }

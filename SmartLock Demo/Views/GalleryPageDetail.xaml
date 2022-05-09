@@ -4,7 +4,12 @@
              x:Class="SmartLock_Demo.Views.GalleryPageDetail">
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Center">
-            <Image x:Name="ImageCell" HeightRequest="100" WidthRequest="100"/>
+            <Image x:Name="ImageCell" HeightRequest="300" WidthRequest="300"/>
+            <Button Text="Delete"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="Center"
+                BackgroundColor="Red"
+                Clicked="DeleteButtonClick"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SmartLock_Demo.ViewModels
 {
@@ -48,8 +49,15 @@ namespace SmartLock_Demo.ViewModels
                 ImageList = new ObservableCollection<GalleryListModel>();
                 foreach (string str in stringArr)
                 {
-
-                    ImageList.Add(new GalleryListModel { FileName = str });
+                    var temp = String.Copy(str);
+                   
+                    var time = temp.Split('-');//yyyyMMdd
+                    var dateString = "20" + time[2] + time[1] + time[0];
+                    //seting culture for date time format
+                    CultureInfo culture = new CultureInfo("en-US");
+                    DateTime dateObject = DateTime.ParseExact(dateString, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
+                    var displayFile = string.Format("{0:D}", dateObject);
+                    ImageList.Add(new GalleryListModel { DisplayName = displayFile, FileName = str });
                 }
             }
             catch (Exception ex)

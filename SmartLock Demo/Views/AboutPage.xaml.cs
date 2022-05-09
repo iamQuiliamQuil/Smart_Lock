@@ -47,7 +47,7 @@ namespace SmartLock_Demo.Views
                 var uuid = response.Content.ReadAsStringAsync().Result;
                 var values = new Dictionary<string, string>
             {
-                { "","uuid~" + uuid + "Qrequest~capture_100x100_png" }
+                { "","uuid~" + uuid + "Qrequest~capture_max_jpeg" }
             };
                 var data = new FormUrlEncodedContent(values);
                 response = Client.PostAsync(url, data).Result;

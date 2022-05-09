@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -18,8 +19,35 @@ namespace SmartLock_Demo.Views
             InitializeComponent();
             PhoneRegister.IsEnabled = false;
             registerCell = PhoneRegister;
+            //creating httpClient with handler to allow ssl
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            Client = new HttpClient(clientHandler);
+            urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
+            try
+            {
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                uuid = response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", "Couldn't connect to lock", "OK");
+            }
+        }
+        public void urlBuilder(string ip)
+        {
+            url = "https://" + ip + "/";
+        }
+        public string commandBuilder(string uuid, string command)
+        {
+            return "uuid~" + uuid + "Qrequest~" + command;
         }
         //hello wor
+        private string url = "";
+        private string uuid = "";
+        //creating http client
+        private static HttpClient Client;
         private async void TextSwitch(object sender, EventArgs e)
         {
             bool wantsText = TextBool.On;
@@ -56,15 +84,38 @@ namespace SmartLock_Demo.Views
                     valid = false;
                 }
             }
-            
-            if(!valid)
+
+            if (!valid)
             {
                 await DisplayAlert("Incorrect Format", "Incorrect phone number format, please input with no" +
                     "hypens, dashes, or spaces. Include dialing code as well", "OK");
-            } else
+            }
+            else
             {
                 Preferences.Set("phoneNumer", phoneNumber);
                 await DisplayAlert("Phone Number Set!", "Phone number successfully set to: " + phoneNumber, "OK");
+                try
+                {
+                    var response = Client.GetAsync(url).Result;
+                    //getting uuid for security
+                    var uuid = response.Content.ReadAsStringAsync().Result;
+                    //for http requests instead of https see android assembly info
+                    var command = commandBuilder(uuid, "addPhone_" + phoneNumber);
+                    //unlock
+                    var values = new Dictionary<string, string>
+                    {
+                        { "",command }
+                    };
+                    var data = new FormUrlEncodedContent(values);
+                    response = Client.PostAsync(url, data).Result;
+                    ////////////
+                    var fileNames = response.Content.ReadAsStringAsync().Result;
+                    await DisplayAlert("Success", fileNames, "OK");
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
         }
         private async void SetIP(object sender, EventArgs e)

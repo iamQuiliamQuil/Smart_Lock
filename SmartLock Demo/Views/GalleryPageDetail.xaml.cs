@@ -17,6 +17,7 @@ namespace SmartLock_Demo.Views
         private string url = "";
         //creating http client
         private static HttpClient Client;
+        String CurrentFile;//used to keep the current image being showns name
         public GalleryPageDetail(String FileName)
         {
             InitializeComponent();
@@ -25,7 +26,7 @@ namespace SmartLock_Demo.Views
             Client = new HttpClient(clientHandler);
             urlBuilder(Preferences.Get("ipAddr", "1.1.1.1"));
 
-            ////////////
+            CurrentFile = FileName;
             var response = Client.GetAsync(url).Result;
             //getting uuid for security
             var uuid = response.Content.ReadAsStringAsync().Result;
@@ -43,6 +44,21 @@ namespace SmartLock_Demo.Views
             {
                 return new MemoryStream(stream);
             });
+        }
+        private void DeleteButtonClick(object sender, EventArgs e)
+        {
+            var response = Client.GetAsync(url).Result;
+            //getting uuid for security
+            var uuid = response.Content.ReadAsStringAsync().Result;
+            //delete the image
+            var command = commandBuilder(uuid, "deleteCapture_" + CurrentFile);
+            var values = new Dictionary<string, string>
+                {
+                    { "",command }
+                };
+            var data = new FormUrlEncodedContent(values);
+            response = Client.PostAsync(url, data).Result;
+            Device.BeginInvokeOnMainThread(async () => await Navigation.PopAsync());
         }
         public void urlBuilder(string ip)
         {

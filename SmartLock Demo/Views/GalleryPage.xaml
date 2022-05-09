@@ -23,12 +23,13 @@
                                        Text="{Binding FileName}"
                                        VerticalOptions="End"
                                        TextColor="Black"/>
-                            <!--
+                            
                             <Label Grid.Column="1"
                                        Grid.Row="1"
                                        VerticalOptions="Start"
-                                       Text="{Binding Detail}"/>
-                            -->
+                                       Text="{Binding DisplayName}"
+                                        TextColor="Black"/>
+                            
                         </Grid>
                     </ViewCell>
                     <!-- <ViewCell Text="" TextColor="Black"/>-->

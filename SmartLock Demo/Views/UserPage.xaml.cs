@@ -62,7 +62,10 @@ namespace SmartLock_Demo.Views
             var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
             player.Load("alertTone.mp3");
             player.Play();*/
-            try { 
+            try {
+                var response = Client.GetAsync(url).Result;
+                //getting uuid for security
+                var uuid = response.Content.ReadAsStringAsync().Result;
                 if (isLocked)
                 {
                     LockButton.Source = "Unlocked.png";
@@ -77,7 +80,7 @@ namespace SmartLock_Demo.Views
                         { "",command }
                     };
                     var data = new FormUrlEncodedContent(values);
-                    var response = Client.PostAsync(url, data).Result;
+                    response = Client.PostAsync(url, data).Result;
                 }
                 else
                 {
@@ -92,7 +95,7 @@ namespace SmartLock_Demo.Views
                         { "",command }
                     };
                     var data = new FormUrlEncodedContent(values);
-                    var response = Client.PostAsync(url, data).Result;
+                    response = Client.PostAsync(url, data).Result;
                 }
             }
             catch(Exception ex)
